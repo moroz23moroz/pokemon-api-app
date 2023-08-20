@@ -6,7 +6,7 @@ interface ComponentProps {
   todos: ToDo[];
 }
 
-export const ItemDescription = ({ todos }: ComponentProps) => {
+export const ViewListItem = ({ todos }: ComponentProps) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [todo, setTodo] = useState<ToDo>();
@@ -20,6 +20,10 @@ export const ItemDescription = ({ todos }: ComponentProps) => {
       navigate("/404");
     }
   }, [todos, id, navigate]);
+
+  const fun = () => {};
+  console.log(fun instanceof Object);
+  
   return (
     <div className="container">
       <h1>{todo?.text}</h1>
