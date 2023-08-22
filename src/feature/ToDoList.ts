@@ -1,31 +1,45 @@
-import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
-import { ToDo } from '../models/todo-item'
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { ToDo } from "../models/todo-item";
 
 export interface TodoState {
-  todo: ToDo[]
+  todos: ToDo[];
 }
 
 const initialState: TodoState = {
-  todo: [],
-}
+  todos: [],
+};
 
 export const todoSlice = createSlice({
-  name: 'todo',
+  name: "todoList",
   initialState,
   reducers: {
-    creareAction: (state) => {
-      
+    createAction: (state, action: PayloadAction<string>) => {
+      const newToDo: ToDo = {
+        id: state.todos.length,
+        text: action.payload,
+        isDone: false,
+      };
+      state.todos = [...state.todos, newToDo];
     },
-    updateAction: (state) => {
-      
+    updateAction: (state, action: PayloadAction<ToDo>) => {
+      const newTodos = state.todos.map((todo) => {
+        if (todo.id === action.payload.id) {
+          todo.isDone = !todo.isDone;
+        }
+        return todo;
+      });
+      state.todos = newTodos;
     },
-    deleteAction: (state, action: PayloadAction<number>) => {
-
+    deleteAction: (state, action: PayloadAction<ToDo>) => {
+      const newTodos = state.todos.filter(
+        (todo) => todo.id !== action.payload.id
+      );
+      state.todos = newTodos;
     },
   },
-})
+});
 
-export const { creareAction, updateAction, deleteAction } = todoSlice.actions
+export const { createAction, updateAction, deleteAction } = todoSlice.actions;
 
-export default todoSlice.reducer
+export default todoSlice.reducer;
